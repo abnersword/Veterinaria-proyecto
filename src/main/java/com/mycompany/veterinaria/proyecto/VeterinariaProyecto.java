@@ -11,6 +11,6 @@ package com.mycompany.veterinaria.proyecto;
 public class VeterinariaProyecto {
 
     public static void main(String[] args) {
-        System.out.println("RAFA CALVO");
+        System.out.println("BUENAS NOCHES SEÑORAS");
     }
 }
