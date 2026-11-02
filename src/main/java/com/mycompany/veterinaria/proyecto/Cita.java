@@ -13,16 +13,18 @@ import java.sql.SQLException;
 public class Cita {
     private int ID_cita;
     private int NumeroCita;
-    private String NombreMascota;
+    private int ID_mascota;
+    private int ID_veterinario;
     private String FechaCita;
     private String HoraCita;
     private String Estado;
     
-    public Cita (int ID_cita,int NumeroCita, String NombreMascota, 
+    public Cita (int ID_cita,int NumeroCita, int ID_mascota, int ID_veterinario, 
             String FechaCita, String HoraCita, String Estado){
         this.ID_cita = ID_cita;
         this.NumeroCita = NumeroCita;
-        this.NombreMascota = NombreMascota;
+        this.ID_mascota = ID_mascota;
+        this.ID_veterinario = ID_veterinario;
         this.FechaCita = FechaCita;
         this.HoraCita = HoraCita;
         this.Estado = Estado;
@@ -70,17 +72,27 @@ public class Cita {
     }
 
     /**
-     * @return the NombreMascota
+     * @return the ID_mascota
      */
-    public String getNombreMascota() {
-        return NombreMascota;
+    public int getID_mascota() {
+        return ID_mascota;
     }
 
     /**
-     * @param NombreMascota the NombreMascota to set
+     * @param ID_mascota the NombreMascota to set
      */
-    public void setNombreMascota(String NombreMascota) {
-        this.NombreMascota = NombreMascota;
+    public void setID_mascota(int ID_mascota) {
+        this.ID_mascota = ID_mascota;
+    }
+    
+    public int getID_veterinario(){
+        return ID_veterinario;
+    }
+    /**
+     * @param ID_veterinario the ID_veterinario to set
+     */
+    public void setID_veterinario(int ID_veterinario){
+        this.ID_veterinario = ID_veterinario;
     }
 
     /**

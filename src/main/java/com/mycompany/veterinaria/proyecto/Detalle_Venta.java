@@ -10,12 +10,16 @@ package com.mycompany.veterinaria.proyecto;
  */
 public class Detalle_Venta {
     private int Id_detalle;
-    private String Cantidad;
+    private int ID_venta;
+    private int ID_producto;
+    private int Cantidad;
     private double Precio;
     private double Subtotal;
 //probando comando
-    public Detalle_Venta(int Id_detalle, String Cantidad, double Precio, double Subtotal) {
+    public Detalle_Venta(int Id_detalle, int ID_venta, int ID_producto, int Cantidad, double Precio, double Subtotal) {
         this.Id_detalle = Id_detalle;
+        this.ID_venta = ID_venta;
+        this.ID_producto = ID_producto;
         this.Cantidad = Cantidad;
         this.Precio = Precio;
         this.Subtotal = Subtotal;
@@ -36,10 +40,22 @@ public class Detalle_Venta {
     public void setId_detalle(int Id_detalle) {
         this.Id_detalle = Id_detalle;
     }
-    public String getCantidad() {
+    public int getID_venta(){
+      return ID_venta;  
+    }
+    public void setID_venta(int ID_venta){
+        this.ID_venta = ID_venta;
+    }
+    public int getID_producto(){
+        return ID_producto;
+    }
+    public void setID_producto(int ID_producto){
+        this.ID_producto = ID_producto;
+    }
+    public int getCantidad() {
         return Cantidad;
     }
-    public void setPrecio(String Cantidad) {
+    public void setCantidad(int Cantidad) {
         this.Cantidad = Cantidad;
     }
     public double getPrecio() {

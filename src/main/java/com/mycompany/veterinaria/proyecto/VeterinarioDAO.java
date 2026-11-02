@@ -26,7 +26,7 @@ public class VeterinarioDAO {
                      sql, Statement.RETURN_GENERATED_KEYS)) {
 
             consulta.setString(1, veterinario.getNombre());
-            consulta.setInt(2, veterinario.getTelefono());
+            consulta.setString(2, veterinario.getTelefono());
             consulta.setString(3, veterinario.getEspecialidad());
             
 

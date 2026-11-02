@@ -11,10 +11,10 @@ package com.mycompany.veterinaria.proyecto;
 public class Veterinario {
     private int ID_veterinario;
     private String Nombre;
-    private int Telefono;
+    private String Telefono;
     private String Especialidad;
     
-    public Veterinario (int ID_veterinario, String Nombre, int Telefono, String Especialidad){
+    public Veterinario (int ID_veterinario, String Nombre, String Telefono, String Especialidad){
         this.ID_veterinario = ID_veterinario;
         this.Nombre = Nombre;
         this.Telefono = Telefono;
@@ -68,14 +68,14 @@ public class Veterinario {
     /**
      * @return the Telefono
      */
-    public int getTelefono() {
+    public String getTelefono() {
         return Telefono;
     }
 
     /**
      * @param Telefono the Telefono to set
      */
-    public void setTelefono(int Telefono) {
+    public void setTelefono(String Telefono) {
         this.Telefono = Telefono;
     }
 

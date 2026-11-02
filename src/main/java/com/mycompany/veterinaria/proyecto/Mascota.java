@@ -12,15 +12,17 @@ import java.sql.SQLException;
  */
 public class Mascota {
     private int ID_mascota;
+    private int ID_dueno;
     private String Nombre;
     private String Especie;
     private String Raza;
     private String Sexo;
     private String Fecha_nacimiento;
     
-    public Mascota (int ID_mascota, String Nombre, String Especie, 
+    public Mascota (int ID_mascota,int ID_dueno, String Nombre, String Especie, 
             String Raza, String Sexo, String Fecha_nacimiento){
         this.ID_mascota = ID_mascota;
+        this.ID_dueno = ID_dueno;
         this.Nombre = Nombre;
         this.Especie = Especie;
         this.Raza = Raza;
@@ -60,7 +62,10 @@ public class Mascota {
     public void setID_mascota(int ID_mascota) {
         this.ID_mascota = ID_mascota;
     }
-
+    public int getID_dueno(){
+        return ID_dueno;
+    }
+    
     /**
      * @return the Nombre
      */

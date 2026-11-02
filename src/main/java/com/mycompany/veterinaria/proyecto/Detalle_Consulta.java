@@ -10,21 +10,23 @@ package com.mycompany.veterinaria.proyecto;
  */
 public class Detalle_Consulta {
     
-
+    
     private int id_detalle;
     private int id_consulta;
+    private int numero_detalle;
+    private String motivo_detalle;
     private String tratamiento;
-    private String medicamento;
-    private String observaciones;
+    private String dosis;
+    private String tiempo_dosis;
 
-    public Detalle_Consulta(int id_detalle, int id_consulta,
-                            String tratamiento, String medicamento,
-                            String observaciones) {
+    public Detalle_Consulta(int id_detalle, int id_consulta, int numero_detalle, String motivo_detalle, String tratamiento, String dosis, String tiempo_dosis) {
         this.id_detalle = id_detalle;
         this.id_consulta = id_consulta;
+        this.numero_detalle = numero_detalle;
+        this.motivo_detalle = motivo_detalle;
         this.tratamiento = tratamiento;
-        this.medicamento = medicamento;
-        this.observaciones = observaciones;
+        this.dosis = dosis;
+        this.tiempo_dosis = tiempo_dosis;
     }
 
     public void registrarDetalle()
@@ -59,6 +61,20 @@ public class Detalle_Consulta {
     public void setId_consulta(int id_consulta) {
         this.id_consulta = id_consulta;
     }
+    public int getNumero_detalle() {
+        return numero_detalle;
+    }
+
+    public void setNumero_detalle(int numero_detalle) {
+        this.numero_detalle = numero_detalle;
+    }
+    public String getMotivo_detalle() {
+        return motivo_detalle;
+    }
+
+    public void setMotivo_detalle(String motivo_detalle) {
+        this.motivo_detalle = motivo_detalle;
+    }
 
     public String getTratamiento() {
         return tratamiento;
@@ -68,20 +84,20 @@ public class Detalle_Consulta {
         this.tratamiento = tratamiento;
     }
 
-    public String getMedicamento() {
-        return medicamento;
+    public String getDosis() {
+        return dosis;
     }
 
-    public void setMedicamento(String medicamento) {
-        this.medicamento = medicamento;
+    public void setDosis(String dosis) {
+        this.dosis = dosis;
     }
 
-    public String getObservaciones() {
-        return observaciones;
+    public String getTiempo_dosis() {
+        return tiempo_dosis;
     }
 
-    public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
+    public void setTiempo_dosis(String tiempo_dosis) {
+        this.tiempo_dosis = tiempo_dosis;
     }
 
 

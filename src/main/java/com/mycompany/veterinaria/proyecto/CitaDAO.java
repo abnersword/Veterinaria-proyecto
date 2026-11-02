@@ -17,8 +17,8 @@ public class CitaDAO {
             throws SQLException {
 
         String sql = """
-            INSERT INTO Cita (NumeroCita, NombreMascota, FechaCita, HoraCita, Estado )
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO Cita (NumeroCita, ID_mascota, ID_veterinario, FechaCita, HoraCita, Estado )
+            VALUES (?, ?, ?, ?, ?, ?)
             """;
 
         try (Connection conexion = Conexion.conectar();
@@ -26,10 +26,11 @@ public class CitaDAO {
                      sql, Statement.RETURN_GENERATED_KEYS)) {
 
             consulta.setInt(1, cita.getNumeroCita());
-            consulta.setString(2, cita.getNombreMascota());
-            consulta.setString(3, cita.getFechaCita());
-            consulta.setString(4, cita.getHoraCita());
-            consulta.setString(5, cita.getEstado());
+            consulta.setInt(2, cita.getID_mascota());
+            consulta.setInt(3, cita.getID_veterinario());
+            consulta.setString(4, cita.getFechaCita());
+            consulta.setString(5, cita.getHoraCita());
+            consulta.setString(6, cita.getEstado());
 
             consulta.executeUpdate();
 

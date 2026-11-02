@@ -10,11 +10,13 @@ package com.mycompany.veterinaria.proyecto;
  */
 public class Venta {
     private int ID_venta;
+    private int ID_dueno;
     private String Fecha;
     private double Total;
 //probando comando
-    public Venta(int ID_venta, String Fecha, double Total) {
+    public Venta(int ID_venta,int ID_dueno, String Fecha, double Total) {
         this.ID_venta = ID_venta;
+        this.ID_dueno = ID_dueno;
         this.Fecha = Fecha;
         this.Total = Total;
     }
@@ -37,6 +39,12 @@ public class Venta {
     }
     public void setID_venta(int ID_venta) {
         this.ID_venta = ID_venta;
+    }
+    public int getID_dueno(){
+        return ID_dueno;
+    }
+    public void setID_dueno(int ID_dueno){
+        this.ID_dueno = ID_dueno;
     }
     public String getFecha() {
         return Fecha;

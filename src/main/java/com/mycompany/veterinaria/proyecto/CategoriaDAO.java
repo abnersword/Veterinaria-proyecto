@@ -22,7 +22,7 @@ public class CategoriaDAO {
         String sql = """
             INSERT INTO categoria_producto (nombre, descripcion)
             VALUES (?, ?)
-            """;
+            """;    
 
         try (Connection conexion = Conexion.conectar();
              PreparedStatement consulta = conexion.prepareStatement(

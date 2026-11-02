@@ -19,19 +19,20 @@ public class MascotaDAO {
             throws SQLException {
 
         String sql = """
-            INSERT INTO Mascota (Nombre, Especie, Raza, Sexo, Fecha_nacimiento)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO Mascota (ID_dueno, Nombre, Especie, Raza, Sexo, Fecha_nacimiento)
+            VALUES (?, ?, ?, ?, ?, ?)
             """;
 
         try (Connection conexion = Conexion.conectar();
              PreparedStatement consulta = conexion.prepareStatement(
                      sql, Statement.RETURN_GENERATED_KEYS)) {
-
-            consulta.setString(1, mascota.getNombre());
-            consulta.setString(2, mascota.getEspecie());
-            consulta.setString(3, mascota.getRaza());
-            consulta.setString(4, mascota.getSexo());
-            consulta.setString(5, mascota.getFecha_nacimiento());
+            
+            consulta.setInt(1, mascota.getID_dueno());
+            consulta.setString(2, mascota.getNombre());
+            consulta.setString(3, mascota.getEspecie());
+            consulta.setString(4, mascota.getRaza());
+            consulta.setString(5, mascota.getSexo());
+            consulta.setString(6, mascota.getFecha_nacimiento());
 
             consulta.executeUpdate();
 

@@ -13,28 +13,26 @@ import java.sql.Statement;
  * @author USER
  */ 
 public class DueñoDAO {
-    public void guardar(Dueño Dueño)
-            throws SQLException {
-        
-    
+    public void guardar(Dueño dueno) throws SQLException {
+
     String sql = """
-            INSERT INTO dueño (id_dueño, nombre, direccion, telefono)
-            VALUES (?, ?, ?, ?)
-            """;
+        INSERT INTO dueno (nombre, direccion, telefono)
+        VALUES (?, ?, ?)
+        """;
+
     try (Connection conexion = Conexion.conectar();
-             PreparedStatement consulta = conexion.prepareStatement(
-                     sql, Statement.RETURN_GENERATED_KEYS)) {
+         PreparedStatement ps = conexion.prepareStatement(
+                 sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            consulta.setInt(1, Dueño.getId_dueño());
-            consulta.setString(2, Dueño.getNombre());
-            consulta.setString(3, Dueño.getDireccion());
-            consulta.setString(4, Dueño.getTelefono());
+        ps.setString(1, dueno.getNombre());
+        ps.setString(2, dueno.getDireccion());
+        ps.setString(3, dueno.getTelefono());
 
-            consulta.executeUpdate();
-    
-    try (ResultSet resultado = consulta.getGeneratedKeys()) {
-                if (resultado.next()) {
-                    Dueño.setId_dueño(resultado.getInt(1));
+        ps.executeUpdate();
+
+        try (ResultSet rs = ps.getGeneratedKeys()) {
+            if (rs.next()) {
+                dueno.setId_dueño(rs.getInt(1));
                 }
             }
         }
