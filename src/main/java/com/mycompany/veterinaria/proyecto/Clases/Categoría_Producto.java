@@ -3,12 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-package com.mycompany.veterinaria.proyecto;
+package com.mycompany.veterinaria.proyecto.Clases;
 
 /**
  *
  * @author rivch
  */
+import com.mycompany.veterinaria.proyecto.Clases.Producto_Servicio;
 import java.util.ArrayList;
 import java.util.List;
 public class Categoría_Producto {

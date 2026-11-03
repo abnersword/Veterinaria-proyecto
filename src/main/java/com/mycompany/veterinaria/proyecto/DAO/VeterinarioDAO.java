@@ -2,44 +2,42 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.veterinaria.proyecto;
-
+package com.mycompany.veterinaria.proyecto.DAO;
+import com.mycompany.veterinaria.proyecto.Clases.Conexion;
+import com.mycompany.veterinaria.proyecto.Clases.Veterinario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 /**
  *
  * @author rivch
  */
-public class MascotaDAO {
-    public void guardar(Mascota mascota)
+public class VeterinarioDAO {
+    public void guardar(Veterinario veterinario)
             throws SQLException {
 
         String sql = """
-            INSERT INTO Mascota (ID_dueno, Nombre, Especie, Raza, Sexo, Fecha_nacimiento)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO Veterinario (Nombre, Telefono, Especialidad)
+            VALUES (?, ?, ?)
             """;
 
         try (Connection conexion = Conexion.conectar();
              PreparedStatement consulta = conexion.prepareStatement(
                      sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            consulta.setString(1, veterinario.getNombre());
+            consulta.setString(2, veterinario.getTelefono());
+            consulta.setString(3, veterinario.getEspecialidad());
             
-            consulta.setInt(1, mascota.getID_dueno());
-            consulta.setString(2, mascota.getNombre());
-            consulta.setString(3, mascota.getEspecie());
-            consulta.setString(4, mascota.getRaza());
-            consulta.setString(5, mascota.getSexo());
-            consulta.setString(6, mascota.getFecha_nacimiento());
 
             consulta.executeUpdate();
 
             // Recupera el ID que MySQL generó automáticamente.
             try (ResultSet resultado = consulta.getGeneratedKeys()) {
                 if (resultado.next()) {
-                    mascota.setID_mascota(resultado.getInt(1));
+                    veterinario.setID_veterinario(resultado.getInt(1));
                 }
             }
         }

@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.veterinaria.proyecto;
+package com.mycompany.veterinaria.proyecto.Clases;
 
+import com.mycompany.veterinaria.proyecto.DAO.CitaDAO;
 import java.sql.SQLException;
 
 /**
