@@ -15,6 +15,7 @@ public class Producto_Servicio {
     private double precio;
     private String descripcion;
     private int stock;
+    private int id_categoria;
     public Producto_Servicio(int idProducto, String nombre,
             String tipo, double precio, String descripcion, int stock) {
 
@@ -80,5 +81,12 @@ public class Producto_Servicio {
     }
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+    public int getId_categoria() {
+        return id_categoria;
+    }
+
+    public void setId_categoria(int id_categoria) {
+        this.id_categoria = id_categoria;
     }
 }
