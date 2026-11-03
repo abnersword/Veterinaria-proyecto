@@ -190,7 +190,6 @@ public List<Venta> listar() throws SQLException {
                     rs.getDouble("subtotal")
 );
 
-detalles.add(detalle);
 
 
                     detalle.setID_venta(rs.getInt("id_venta"));

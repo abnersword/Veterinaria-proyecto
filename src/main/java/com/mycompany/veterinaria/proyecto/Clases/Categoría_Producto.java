@@ -12,6 +12,8 @@ package com.mycompany.veterinaria.proyecto.Clases;
 import com.mycompany.veterinaria.proyecto.Clases.Producto_Servicio;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.SQLException;
+import com.mycompany.veterinaria.proyecto.DAO.CategoriaDAO;
 public class Categoría_Producto {
     // Atributos
     private int idCategoria;
@@ -30,7 +32,20 @@ public class Categoría_Producto {
         this.descripcion = descripcion;
         this.productos = new ArrayList<>();
     }
+    public void registrarCategoria() throws SQLException {
+        CategoriaDAO dao = new CategoriaDAO();
+        dao.guardar(this);
+    }
 
+    public void modificarCategoria() throws SQLException {
+        CategoriaDAO dao = new CategoriaDAO();
+        dao.actualizar(this);
+    }
+
+    public void eliminarCategoria() throws SQLException {
+        CategoriaDAO dao = new CategoriaDAO();
+        dao.eliminar(this.idCategoria);
+    }
     public void cambiarNombre(String nuevoNombre) {
         this.nombre = nuevoNombre;
     }
@@ -44,15 +59,16 @@ public class Categoría_Producto {
             productos.add(producto);
         }
     }
-
+    
     public void eliminarProducto(Producto_Servicio producto) {
         productos.remove(producto);
     }
-
+    
     public List<Producto_Servicio> obtenerProductos() {
         // Devuelve una copia de la lista
         return new ArrayList<>(productos);
     }
+    
 
     // Getters
     public int getIdCategoria() {

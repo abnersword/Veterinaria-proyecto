@@ -15,6 +15,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CategoriaDAO {
 
@@ -43,4 +45,62 @@ public class CategoriaDAO {
             }
         }
     }
+    public List<Categoría_Producto> listar() throws SQLException {
+
+        List<Categoría_Producto> categorias = new ArrayList<>();
+
+        String sql = "SELECT id_categoria, nombre, descripcion "
+            + "FROM categoria_producto ORDER BY id_categoria";
+
+        try (Connection conexion = Conexion.conectar();
+            PreparedStatement consulta = conexion.prepareStatement(sql);
+            ResultSet resultado = consulta.executeQuery()) {
+
+            while (resultado.next()) {
+
+                Categoría_Producto categoria = new Categoría_Producto(
+                        resultado.getInt("id_categoria"),
+                        resultado.getString("nombre"),
+                        resultado.getString("descripcion"));
+
+                categorias.add(categoria);
+            }
+        }
+
+        return categorias;
+    }
+    public void actualizar(Categoría_Producto categoria)
+        throws SQLException {
+
+    String sql = "UPDATE categoria_producto "
+            + "SET nombre = ?, descripcion = ? "
+            + "WHERE id_categoria = ?";
+
+    try (Connection conexion = Conexion.conectar();
+         PreparedStatement consulta = conexion.prepareStatement(sql)) {
+
+        consulta.setString(1, categoria.getNombre());
+        consulta.setString(2, categoria.getDescripcion());
+        consulta.setInt(3, categoria.getIdCategoria());
+
+        consulta.executeUpdate();
+    }
+}
+    public void eliminar(int idCategoria) throws SQLException {
+
+    String sql = "DELETE FROM categoria_producto "
+            + "WHERE id_categoria = ?";
+
+    try (Connection conexion = Conexion.conectar();
+         PreparedStatement consulta = conexion.prepareStatement(sql)) {
+
+        consulta.setInt(1, idCategoria);
+
+        int filas = consulta.executeUpdate();
+
+        if (filas == 0) {
+            throw new SQLException("La categoria ya no existe");
+        }
+    }
+}
 }
