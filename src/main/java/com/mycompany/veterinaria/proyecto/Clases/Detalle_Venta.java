@@ -28,7 +28,7 @@ public class Detalle_Venta {
         //aca se agregara el detalle
     }
     public void calcularSubtotal(){
-        //agregar el calculo del subtotal
+        this.Subtotal = this.Cantidad * this.Precio;
     }
     private void actualizarCantidad(){
         //codigo para actualizarlo desde la base de datos

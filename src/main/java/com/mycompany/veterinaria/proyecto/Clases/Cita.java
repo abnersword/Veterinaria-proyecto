@@ -6,6 +6,8 @@ package com.mycompany.veterinaria.proyecto.Clases;
 
 import com.mycompany.veterinaria.proyecto.DAO.CitaDAO;
 import java.sql.SQLException;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -31,10 +33,6 @@ public class Cita {
         this.Estado = Estado;
     }
     
-    public void RegistrarCita() throws SQLException{
-        CitaDAO cdao = new CitaDAO();
-        cdao.guardar(this);
-    }
     
     public void CancelarCita(){
         
@@ -43,7 +41,25 @@ public class Cita {
     public Boolean ActualizarEstado(){ 
         return null;
     }
+public void RegistrarCita() throws SQLException {
+    new CitaDAO().guardar(this);
+}
 
+public void actualizarCita() throws SQLException {
+    new CitaDAO().actualizar(this);
+}
+
+public void eliminarCita() throws SQLException {
+    new CitaDAO().eliminar(this.ID_cita);
+}
+
+public static Cita buscarCita(int id) throws SQLException {
+    return new CitaDAO().buscarPorId(id);
+}
+
+public static List<Cita> listarCitas() throws SQLException {
+    return new CitaDAO().listar();
+}
     /**
      * @return the ID_cita
      */

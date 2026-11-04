@@ -6,6 +6,8 @@ package com.mycompany.veterinaria.proyecto.Clases;
 
 import com.mycompany.veterinaria.proyecto.DAO.MascotaDAO;
 import java.sql.SQLException;
+import java.util.List;
+
 
 /**
  *
@@ -31,14 +33,9 @@ public class Mascota {
         this.Fecha_nacimiento = Fecha_nacimiento;
     }
     
-    public void registrarMascota() throws SQLException{
-        MascotaDAO mdao = new MascotaDAO();
-        mdao.guardar(this);
-    }
+
     
-    public void actualizarDatos(){
-        
-    }
+
     
     public void consultarMascota(){
         System.out.println("El ID de la mascota es: " + getID_mascota());
@@ -49,6 +46,25 @@ public class Mascota {
         System.out.println("La fecha de nacimiento de la mascota es: " + getFecha_nacimiento());
         
     }
+    public void registrarMascota() throws SQLException {
+    new MascotaDAO().guardar(this);
+}
+
+public void actualizarDatos() throws SQLException {
+    new MascotaDAO().actualizar(this);
+}
+
+public void eliminarMascota() throws SQLException {
+    new MascotaDAO().eliminar(this.ID_mascota);
+}
+
+public static Mascota buscarMascota(int id) throws SQLException {
+    return new MascotaDAO().buscarPorId(id);
+}
+
+public static List<Mascota> listarMascotas() throws SQLException {
+    return new MascotaDAO().listar();
+}
 
     /**
      * @return the ID_mascota

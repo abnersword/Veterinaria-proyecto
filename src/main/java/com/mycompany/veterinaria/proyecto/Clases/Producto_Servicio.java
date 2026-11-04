@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.veterinaria.proyecto.Clases;
+import com.mycompany.veterinaria.proyecto.DAO.ProductoServicioDAO;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -51,6 +54,29 @@ public class Producto_Servicio {
         }
         return precio * cantidad;
     }
+    public void registrarProducto() throws SQLException {
+    new ProductoServicioDAO().guardar(this);
+}
+
+public void modificarProducto() throws SQLException {
+    new ProductoServicioDAO().actualizar(this);
+}
+
+public void eliminarProducto() throws SQLException {
+    new ProductoServicioDAO().eliminar(this.idProducto);
+}
+
+public static Producto_Servicio buscarProducto(int id)
+        throws SQLException {
+
+    return new ProductoServicioDAO().buscarPorId(id);
+}
+
+public static List<Producto_Servicio> listarProductos()
+        throws SQLException {
+
+    return new ProductoServicioDAO().listar();
+}
     // Getters y setters
     public int getIdProducto() {
         return idProducto;

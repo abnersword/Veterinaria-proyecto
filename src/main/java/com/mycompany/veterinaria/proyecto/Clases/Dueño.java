@@ -5,6 +5,7 @@
 package com.mycompany.veterinaria.proyecto.Clases;
 import com.mycompany.veterinaria.proyecto.DAO.DueñoDAO;
 import java.sql.SQLException;
+import java.util.List;
 /**
  *
  * @author rivch
@@ -23,20 +24,30 @@ public class Dueño {
         this.direccion=direccion;
         
     }
-    public void registrarDueño()throws SQLException
-            
-    {
-        DueñoDAO dao = new DueñoDAO();
-        dao.guardar(this);
+    public void registrarDueño() throws SQLException {
+        new DueñoDAO().guardar(this);
     }
-    public void actualizarDatos()
-    {
-        
+
+    public void actualizarDatos() throws SQLException {
+        new DueñoDAO().actualizar(this);
     }
     public void consultarDueño()
     {
         
     }
+    
+
+public void eliminarDueño() throws SQLException {
+    new DueñoDAO().eliminar(this.id_dueño);
+}
+
+public static Dueño buscarDueño(int id) throws SQLException {
+    return new DueñoDAO().buscarPorId(id);
+}
+
+public static List<Dueño> listarDueños() throws SQLException {
+    return new DueñoDAO().listar();
+}
     // Getters y setters
     public String getTelefono() {
         return telefono;

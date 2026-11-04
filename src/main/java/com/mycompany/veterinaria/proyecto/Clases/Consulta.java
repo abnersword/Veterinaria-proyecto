@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.veterinaria.proyecto.Clases;
-
+import com.mycompany.veterinaria.proyecto.DAO.ConsultaDAO;
+import java.sql.SQLException;
+import java.util.List;
 /**
  *
  * @author rivch
@@ -46,7 +48,43 @@ public class Consulta {
     {
 
     }
-    
+    public void registrarConsulta(List<Detalle_Consulta> detalles)
+        throws SQLException {
+
+    new ConsultaDAO().guardar(this, detalles);
+}
+
+public void eliminarConsulta() throws SQLException {
+    new ConsultaDAO().eliminar(this.id_consulta);
+}
+
+public static Consulta buscarConsulta(int id)
+        throws SQLException {
+
+    return new ConsultaDAO().buscarPorId(id);
+}
+
+public static List<Consulta> listarConsultas()
+        throws SQLException {
+
+    return new ConsultaDAO().listar();
+}
+
+public List<Detalle_Consulta> consultarDetalles()
+        throws SQLException {
+
+    return new ConsultaDAO().listarDetalles(this.id_consulta);
+}
+
+public void actualizarEstadoConsulta(String nuevoEstado)
+        throws SQLException {
+
+    new ConsultaDAO().actualizarEstado(
+            this.id_consulta, nuevoEstado);
+
+    // Cambia el objeto solo después del éxito del DAO.
+    this.estado_consulta = nuevoEstado;
+}
     // Getters y Setters
 
     public int getId_consulta() {

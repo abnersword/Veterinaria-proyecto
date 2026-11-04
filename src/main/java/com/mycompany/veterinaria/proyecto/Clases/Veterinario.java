@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.veterinaria.proyecto.Clases;
+import com.mycompany.veterinaria.proyecto.DAO.VeterinarioDAO;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -19,16 +22,7 @@ public class Veterinario {
         this.Nombre = Nombre;
         this.Telefono = Telefono;
         this.Especialidad = Especialidad;
-    }
-    
-    public void registrarVeterinario(){
-        
-    }
-    
-    public void actualizarDatos(){
-        
-    }
-    
+    }   
     public void consultarVeterinario(){
         System.out.println("El ID del veterinario es: " + getID_veterinario());
         System.out.println("El nombre del veterinario es: " + getNombre());
@@ -36,6 +30,29 @@ public class Veterinario {
         System.out.println("La raza del veterinario es: " + getEspecialidad());
         
     }
+    public void registrarVeterinario() throws SQLException {
+    new VeterinarioDAO().guardar(this);
+}
+
+public void actualizarDatos() throws SQLException {
+    new VeterinarioDAO().actualizar(this);
+}
+
+public void eliminarVeterinario() throws SQLException {
+    new VeterinarioDAO().eliminar(this.ID_veterinario);
+}
+
+public static Veterinario buscarVeterinario(int id)
+        throws SQLException {
+
+    return new VeterinarioDAO().buscarPorId(id);
+}
+
+public static List<Veterinario> listarVeterinarios()
+        throws SQLException {
+
+    return new VeterinarioDAO().listar();
+}
 
     /**
      * @return the ID_veterinario

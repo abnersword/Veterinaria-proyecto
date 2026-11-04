@@ -102,5 +102,31 @@ public class CategoriaDAO {
             throw new SQLException("La categoria ya no existe");
         }
     }
+    
+}
+    public Categoría_Producto buscarPorId(int idCategoria)
+        throws SQLException {
+
+    String sql = "SELECT id_categoria, nombre, descripcion "
+            + "FROM categoria_producto WHERE id_categoria = ?";
+
+    try (Connection conexion = Conexion.conectar();
+         PreparedStatement consulta = conexion.prepareStatement(sql)) {
+
+        consulta.setInt(1, idCategoria);
+
+        try (ResultSet resultado = consulta.executeQuery()) {
+
+            if (resultado.next()) {
+                return new Categoría_Producto(
+                        resultado.getInt("id_categoria"),
+                        resultado.getString("nombre"),
+                        resultado.getString("descripcion")
+                );
+            }
+        }
+    }
+
+    return null;
 }
 }

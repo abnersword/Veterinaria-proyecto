@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.veterinaria.proyecto.Clases;
+import com.mycompany.veterinaria.proyecto.DAO.VentaDAO;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -34,6 +37,29 @@ public class Venta {
         System.out.println("Fecha: " + Fecha);
         System.out.println("Total: Q" + Total);
     }
+    public void registrarVenta(List<Detalle_Venta> detalles)
+        throws SQLException {
+
+    new VentaDAO().guardar(this, detalles);
+}
+
+public void eliminarVenta() throws SQLException {
+    new VentaDAO().eliminar(this.ID_venta);
+}
+
+public static Venta buscarVenta(int id) throws SQLException {
+    return new VentaDAO().buscarPorId(id);
+}
+
+public static List<Venta> listarVentas() throws SQLException {
+    return new VentaDAO().listar();
+}
+
+public List<Detalle_Venta> consultarDetalles()
+        throws SQLException {
+
+    return new VentaDAO().listarDetalles(this.ID_venta);
+}
     public int getID_venta() {
         return ID_venta;
     }
