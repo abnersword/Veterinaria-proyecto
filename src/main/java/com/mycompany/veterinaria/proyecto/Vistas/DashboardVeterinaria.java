@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class DashboardVeterinaria extends JFrame {
@@ -278,20 +277,21 @@ principal.add(banner);
         contenido.repaint();
     }
 
-    private void mostrarSeccion(String nombre) {
-        contenido.removeAll();
-        JPanel pagina = new JPanel(new BorderLayout());
-        pagina.setBackground(FONDO);
-        pagina.setBorder(new EmptyBorder(30, 30, 30, 30));
-        pagina.add(titulo(nombre, 28), BorderLayout.NORTH);
-        JLabel aviso = new JLabel("falta conectar " + nombre + " animo!", SwingConstants.CENTER);
-        aviso.setFont(new Font("Segoe UI", Font.PLAIN, 17));
-        aviso.setForeground(new Color(192, 196, 219));
-        pagina.add(aviso, BorderLayout.CENTER);
-        contenido.add(pagina, BorderLayout.CENTER);
-        contenido.revalidate();
-        contenido.repaint();
-    }
+    
+private void mostrarSeccion(String nombre) {
+    contenido.removeAll();
+
+    JPanel pagina = PantallasVeterinaria.crear(nombre);
+
+    JScrollPane scroll = new JScrollPane(pagina);
+    scroll.setBorder(null);
+    scroll.getVerticalScrollBar().setUnitIncrement(16);
+
+    contenido.add(scroll, BorderLayout.CENTER);
+
+    contenido.revalidate();
+    contenido.repaint();
+}
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new DashboardVeterinaria().setVisible(true));
