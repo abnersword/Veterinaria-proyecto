@@ -6,6 +6,13 @@ import java.util.Map;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import com.mycompany.veterinaria.proyecto.Clases.Cita;
+import com.mycompany.veterinaria.proyecto.DAO.CitaDAO;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /** Pantallas visuales. No escribe en la base de datos hasta integrar los DAO. */
 public class PantallasVeterinaria {
@@ -47,6 +54,229 @@ public class PantallasVeterinaria {
 }
         return pagina;
     }
+    
+private static void configurarCitas(
+        Map<String, JTextField> entradas,
+        JButton guardar,
+        JButton buscar,
+        JTable tabla,
+        DefaultTableModel modelo,
+        JLabel aviso) {
+
+    JTextField txtId = entradas.get("ID cita");
+    JTextField txtNumero = entradas.get("Número de cita");
+    JTextField txtMascota = entradas.get("ID mascota");
+    JTextField txtFecha = entradas.get("Fecha (AAAA-MM-DD)");
+    JTextField txtHora = entradas.get("Hora (HH:MM)");
+    JTextField txtEstado = entradas.get("Estado");
+    JTextField txtVeterinario = entradas.get("ID veterinario");
+
+    // El ID de la cita lo genera MySQL
+    txtId.setEditable(false);
+
+    // Mostrar las citas existentes al abrir el formulario
+    cargarCitas(modelo, aviso);
+
+    // BOTON GUARDAR
+    guardar.addActionListener(e -> {
+
+        try {
+            int numero = Integer.parseInt(
+                    txtNumero.getText().trim());
+
+            int mascota = Integer.parseInt(
+                    txtMascota.getText().trim());
+
+            int veterinario = Integer.parseInt(
+                    txtVeterinario.getText().trim());
+
+            String fecha = txtFecha.getText().trim();
+            String hora = txtHora.getText().trim();
+            String estado = txtEstado.getText().trim();
+
+            // Validar fecha y hora
+            LocalDate.parse(fecha);
+            LocalTime.parse(hora);
+
+            if (numero <= 0 || mascota <= 0 ||
+                    veterinario <= 0 || estado.isEmpty()) {
+
+                JOptionPane.showMessageDialog(tabla,
+                        "Complete correctamente todos los campos.");
+                return;
+            }
+
+            // Crear el objeto utilizando tu constructor actual
+            Cita cita = new Cita(
+                    0,
+                    numero,
+                    mascota,
+                    veterinario,
+                    fecha,
+                    hora,
+                    estado
+            );
+
+            // Llamar al metodo que ya tienes en Cita.java
+            cita.RegistrarCita();
+
+            JOptionPane.showMessageDialog(tabla,
+                    "Cita registrada correctamente. ID: "
+                    + cita.getID_cita());
+
+            // Limpiar campos
+            entradas.values().forEach(c -> c.setText(""));
+
+            // Actualizar la tabla
+            cargarCitas(modelo, aviso);
+
+        } catch (NumberFormatException ex) {
+
+            JOptionPane.showMessageDialog(tabla,
+                    "Numero de cita, ID mascota e ID veterinario "
+                    + "deben ser numeros enteros.");
+
+        } catch (DateTimeParseException ex) {
+
+            JOptionPane.showMessageDialog(tabla,
+                    "Fecha: AAAA-MM-DD. Hora: HH:MM.");
+
+        } catch (SQLException ex) {
+
+            JOptionPane.showMessageDialog(tabla,
+                    "Error al guardar la cita: "
+                    + ex.getMessage());
+        }
+    });
+
+    // BOTON BUSCAR
+    buscar.addActionListener(e -> {
+
+        String valor = JOptionPane.showInputDialog(
+                tabla, "Ingrese el ID de la cita:");
+
+        if (valor == null) {
+            return;
+        }
+
+        try {
+            int id = Integer.parseInt(valor.trim());
+
+            Cita cita = Cita.buscarCita(id);
+
+            if (cita == null) {
+                JOptionPane.showMessageDialog(tabla,
+                        "No se encontro la cita.");
+                return;
+            }
+
+            mostrarDatosCita(cita, entradas);
+
+        } catch (NumberFormatException ex) {
+
+            JOptionPane.showMessageDialog(tabla,
+                    "Ingrese un ID numerico valido.");
+
+        } catch (SQLException ex) {
+
+            JOptionPane.showMessageDialog(tabla,
+                    "Error al buscar: " + ex.getMessage());
+        }
+    });
+
+    // MOSTRAR LOS DATOS AL SELECCIONAR UNA FILA
+    tabla.getSelectionModel().addListSelectionListener(e -> {
+
+        if (!e.getValueIsAdjusting()
+                && tabla.getSelectedRow() >= 0) {
+
+            int fila = tabla.convertRowIndexToModel(
+                    tabla.getSelectedRow());
+
+            txtId.setText(modelo.getValueAt(fila, 0).toString());
+            txtNumero.setText(modelo.getValueAt(fila, 1).toString());
+            txtMascota.setText(modelo.getValueAt(fila, 2).toString());
+            txtFecha.setText(modelo.getValueAt(fila, 3).toString());
+            txtHora.setText(modelo.getValueAt(fila, 4).toString());
+            txtEstado.setText(modelo.getValueAt(fila, 5).toString());
+            txtVeterinario.setText(
+                    modelo.getValueAt(fila, 6).toString());
+        }
+    });
+}
+
+private static void cargarCitas(
+        DefaultTableModel modelo,
+        JLabel aviso) {
+
+    try {
+
+        // Limpiar los registros actuales
+        modelo.setRowCount(0);
+
+        // Utilizar el metodo existente de Cita.java
+        for (Cita cita : Cita.listarCitas()) {
+
+            String hora = cita.getHoraCita();
+
+            if (hora != null && hora.length() >= 5) {
+                hora = hora.substring(0, 5);
+            }
+
+            modelo.addRow(new Object[]{
+                cita.getID_cita(),
+                cita.getNumeroCita(),
+                cita.getID_mascota(),
+                cita.getFechaCita(),
+                hora,
+                cita.getEstado(),
+                cita.getID_veterinario()
+            });
+        }
+
+        aviso.setText(
+                "Total de citas registradas: "
+                + modelo.getRowCount());
+
+    } catch (SQLException ex) {
+
+        aviso.setText("Error al cargar las citas.");
+
+        JOptionPane.showMessageDialog(null,
+                "Error de MySQL: " + ex.getMessage());
+    }
+}
+
+private static void mostrarDatosCita(
+        Cita cita,
+        Map<String, JTextField> entradas) {
+
+    entradas.get("ID cita").setText(
+            String.valueOf(cita.getID_cita()));
+
+    entradas.get("Número de cita").setText(
+            String.valueOf(cita.getNumeroCita()));
+
+    entradas.get("ID mascota").setText(
+            String.valueOf(cita.getID_mascota()));
+
+    entradas.get("Fecha (AAAA-MM-DD)").setText(
+            cita.getFechaCita());
+
+    String hora = cita.getHoraCita();
+
+    if (hora != null && hora.length() >= 5) {
+        hora = hora.substring(0, 5);
+    }
+
+    entradas.get("Hora (HH:MM)").setText(hora);
+
+    entradas.get("Estado").setText(cita.getEstado());
+
+    entradas.get("ID veterinario").setText(
+            String.valueOf(cita.getID_veterinario()));
+}
+
 
     private static JPanel crearFormulario(String seccion,String[] campos) {
         JPanel contenedor = new JPanel(new BorderLayout(0,16));
@@ -83,17 +313,13 @@ public class PantallasVeterinaria {
         JButton nuevo = boton("Limpiar campos",MORADO);
         nuevo.addActionListener(e -> entradas.values().forEach(c -> c.setText("")));
         JButton guardar = boton("Guardar",new Color(40,107,163));
-        guardar.addActionListener(e -> JOptionPane.showMessageDialog(formulario,
-            "Interfaz preparada. Falta conectar Guardar con el DAO de " + seccion + ".",
-            "Integración pendiente",JOptionPane.INFORMATION_MESSAGE));
+        
         JButton buscar = boton("Buscar",new Color(65,75,113));
-        buscar.addActionListener(e -> JOptionPane.showMessageDialog(formulario,
-            "Falta conectar Buscar con el DAO de " + seccion + ".",
-            "Integración pendiente",JOptionPane.INFORMATION_MESSAGE));
+        
         acciones.add(nuevo); acciones.add(guardar); acciones.add(buscar);
         formulario.add(acciones,BorderLayout.SOUTH);
         contenedor.add(formulario,BorderLayout.NORTH);
-
+        
         JPanel listado = panel();
         listado.setLayout(new BorderLayout(0,10));
         JLabel tituloTabla = new JLabel("Registros de " + seccion.toLowerCase());
@@ -120,6 +346,22 @@ public class PantallasVeterinaria {
         aviso.setForeground(new Color(190,194,216));
         listado.add(aviso,BorderLayout.SOUTH);
         contenedor.add(listado,BorderLayout.CENTER);
+        if (seccion.equals("Citas")) {
+
+        configurarCitas(
+            entradas, guardar, buscar,
+            tabla, modelo, aviso
+        );
+        } else {
+        guardar.addActionListener(e ->
+        JOptionPane.showMessageDialog(
+                formulario,
+                "Integración pendiente para " + seccion));
+        buscar.addActionListener(e ->
+        JOptionPane.showMessageDialog(
+                formulario,
+                "Búsqueda pendiente para " + seccion));
+}
         return contenedor;
     }
 

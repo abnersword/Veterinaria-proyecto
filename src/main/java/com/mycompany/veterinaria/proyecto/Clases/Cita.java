@@ -6,7 +6,6 @@ package com.mycompany.veterinaria.proyecto.Clases;
 
 import com.mycompany.veterinaria.proyecto.DAO.CitaDAO;
 import java.sql.SQLException;
-import java.sql.SQLException;
 import java.util.List;
 
 /**

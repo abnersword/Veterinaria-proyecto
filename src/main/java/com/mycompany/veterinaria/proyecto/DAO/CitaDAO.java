@@ -44,7 +44,7 @@ public class CitaDAO {
 
         // Fecha: yyyy-MM-dd. Hora: HH:mm:ss.
         consulta.setDate(4, Date.valueOf(cita.getFechaCita()));
-        consulta.setTime(5, Time.valueOf(cita.getHoraCita()));
+        consulta.setTime(5, java.sql.Time.valueOf(java.time.LocalTime.parse(cita.getHoraCita())));
 
         consulta.setString(6, cita.getEstado());
     }
@@ -159,4 +159,5 @@ public class CitaDAO {
             }
         }
     }
+    
 }
