@@ -16,6 +16,7 @@ import com.mycompany.veterinaria.proyecto.Clases.Detalle_Venta;
 import com.mycompany.veterinaria.proyecto.Clases.Consulta;
 import com.mycompany.veterinaria.proyecto.Clases.Detalle_Consulta;
 import com.mycompany.veterinaria.proyecto.DAO.CitaDAO;
+import com.mycompany.veterinaria.proyecto.DAO.ConsultaDAO;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -79,6 +80,8 @@ private static void configurarCitas(
         Map<String, JTextField> entradas,
         JButton guardar,
         JButton buscar,
+        JButton eliminar,
+        
         JTable tabla,
         DefaultTableModel modelo,
         JLabel aviso) {
@@ -203,7 +206,87 @@ private static void configurarCitas(
                     "Error al buscar: " + ex.getMessage());
         }
     });
+    
+    //BOTÒN ELIMINAR
+    eliminar.addActionListener(e -> {
 
+    try {
+        // Obtener ID desde el formulario
+        String textoId = entradas.get("ID cita").getText().trim();
+
+        if (textoId.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "Seleccione o busque una cita para eliminar."
+            );
+            return;
+        }
+
+        int idCita = Integer.parseInt(textoId);
+
+        if (idCita <= 0) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "El ID de cita no es válido."
+            );
+            return;
+        }
+
+        // Comprobar si existe
+        Cita cita = Cita.buscarCita(idCita);
+
+        if (cita == null) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "La cita no existe."
+            );
+            return;
+        }
+
+        // Solicitar confirmación
+        int respuesta = JOptionPane.showConfirmDialog(
+                tabla,
+                "¿Deseas eliminar la cita con ID " + idCita + "?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (respuesta != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        // Eliminar utilizando la clase Cita
+        cita.eliminarCita();
+
+        // Limpiar campos
+        entradas.values().forEach(campo -> campo.setText(""));
+
+        // Actualizar tabla
+        cargarCitas(modelo, aviso);
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Cita eliminada correctamente."
+        );
+
+    } catch (NumberFormatException ex) {
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "El ID de cita debe ser numérico."
+        );
+
+    } catch (SQLException ex) {
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Error al eliminar la cita: " + ex.getMessage()
+        );
+    }
+    });
+
+    
     // MOSTRAR LOS DATOS AL SELECCIONAR UNA FILA
     tabla.getSelectionModel().addListSelectionListener(e -> {
 
@@ -499,6 +582,7 @@ private static void configurarMascotas(
         Map<String, JTextField> entradas,
         JButton guardar,
         JButton buscar,
+        JButton eliminar,
         JTable tabla,
         DefaultTableModel modelo,
         JLabel aviso) {
@@ -624,6 +708,86 @@ private static void configurarMascotas(
                     + ex.getMessage());
         }
     });
+    
+    //BOTÒN ELIMINAR
+    eliminar.addActionListener(e -> {
+
+    try {
+        // Obtener ID desde el formulario
+        String textoId = entradas.get("ID mascota").getText().trim();
+
+        if (textoId.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "Seleccione o busque una mascota para eliminar."
+            );
+            return;
+        }
+
+        int idMascota = Integer.parseInt(textoId);
+
+        if (idMascota <= 0) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "El ID de la mascota no es válido."
+            );
+            return;
+        }
+
+        // Comprobar si existe
+        Mascota masco = Mascota.buscarMascota(idMascota);
+
+        if (masco == null) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "La mascota no existe."
+            );
+            return;
+        }
+
+        // Solicitar confirmación
+        int respuesta = JOptionPane.showConfirmDialog(
+                tabla,
+                "¿Deseas eliminar la mascota con ID " + idMascota + "?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (respuesta != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        // Eliminar utilizando la clase Cita
+        masco.eliminarMascota();
+
+        // Limpiar campos
+        entradas.values().forEach(campo -> campo.setText(""));
+
+        // Actualizar tabla
+        cargarMascotas(modelo, aviso);
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Mascota eliminada correctamente."
+        );
+
+    } catch (NumberFormatException ex) {
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "El ID de la mascota debe ser numérico."
+        );
+
+    } catch (SQLException ex) {
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Error al eliminar la mascota: " + ex.getMessage()
+        );
+    }
+    });
+    
 
     // SELECCIONAR UNA FILA DEL JTABLE
     tabla.getSelectionModel().addListSelectionListener(e -> {
@@ -725,6 +889,7 @@ private static void configurarDuenos(
         Map<String, JTextField> entradas,
         JButton guardar,
         JButton buscar,
+        JButton eliminar,
         JTable tabla,
         DefaultTableModel modelo,
         JLabel aviso) {
@@ -818,6 +983,114 @@ private static void configurarDuenos(
                     "Error al buscar: " + ex.getMessage());
         }
     });
+    
+    eliminar.addActionListener(e -> {
+
+    try {
+        // Obtener el ID del dueño seleccionado
+        String textoId = entradas.get("ID dueño")
+                .getText().trim();
+
+        if (textoId.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "Seleccione o busque un dueño para eliminar."
+            );
+            return;
+        }
+
+        int idDueno = Integer.parseInt(textoId);
+
+        if (idDueno <= 0) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "El ID del dueño no es válido."
+            );
+            return;
+        }
+
+        // Buscar el dueño en MySQL
+        Dueño dueno = Dueño.buscarDueño(idDueno);
+
+        if (dueno == null) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "El dueño no existe."
+            );
+            return;
+        }
+
+        // Solicitar confirmación
+        int respuesta = JOptionPane.showConfirmDialog(
+                tabla,
+                "¿Está seguro de eliminar al dueño con ID "
+                        + idDueno + "?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (respuesta != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        // Eliminar utilizando la clase Dueño
+        dueno.eliminarDueño();
+
+        // Limpiar selección y campos
+        tabla.clearSelection();
+        entradas.values().forEach(campo -> campo.setText(""));
+
+        // Actualizar JTable
+        cargarDuenos(modelo, aviso);
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Dueño eliminado correctamente."
+        );
+
+    } catch (NumberFormatException ex) {
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Ingrese un ID de dueño válido."
+        );
+
+    } catch (SQLException ex) {
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Error al eliminar dueño: "
+                        + ex.getMessage()
+        );
+    }
+});
+   
+
+    // SELECCIONAR UNA FILA DEL JTABLE
+    tabla.getSelectionModel().addListSelectionListener(e -> {
+
+        if (!e.getValueIsAdjusting()
+                && tabla.getSelectedRow() >= 0) {
+
+            int fila = tabla.convertRowIndexToModel(
+                    tabla.getSelectedRow());
+
+            txtId.setText(
+                    String.valueOf(modelo.getValueAt(fila, 0)));
+
+            txtNombre.setText(
+                    String.valueOf(modelo.getValueAt(fila, 1)));
+
+            txtTelefono.setText(
+                    String.valueOf(modelo.getValueAt(fila, 2)));
+
+            txtDireccion.setText(
+                    String.valueOf(modelo.getValueAt(fila, 3)));
+
+        }
+    });
+    
 
     // SELECCIONAR UNA FILA DEL JTABLE
     tabla.getSelectionModel().addListSelectionListener(e -> {
@@ -894,6 +1167,7 @@ private static void configurarVeterinarios(
         Map<String, JTextField> entradas,
         JButton guardar,
         JButton buscar,
+        JButton eliminar,
         JTable tabla,
         DefaultTableModel modelo,
         JLabel aviso) {
@@ -1006,6 +1280,88 @@ private static void configurarVeterinarios(
                     + ex.getMessage());
         }
     });
+    
+    //BOTÒN ELIMINAR
+    eliminar.addActionListener(e -> {
+
+    try {
+        // Obtener ID desde el formulario
+        String textoId = entradas.get("ID veterinario").getText().trim();
+
+        if (textoId.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "Seleccione o busque un veterinario para eliminar."
+            );
+            return;
+        }
+
+        int idVeterinario = Integer.parseInt(textoId);
+
+        if (idVeterinario <= 0) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "El ID del veterinario no es válido."
+            );
+            return;
+        }
+
+        // Comprobar si existe
+        Veterinario vet = Veterinario.buscarVeterinario(idVeterinario);
+
+        if (vet == null) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "El veterinario no existe."
+            );
+            return;
+        }
+
+        // Solicitar confirmación
+        int respuesta = JOptionPane.showConfirmDialog(
+                tabla,
+                "¿Deseas eliminar el veterinario con ID " + idVeterinario+ "?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (respuesta != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        // Eliminar utilizando la clase Cita
+        vet.eliminarVeterinario();
+
+        // Limpiar campos
+        entradas.values().forEach(campo -> campo.setText(""));
+
+        // Actualizar tabla
+        cargarVeterinarios(modelo, aviso);
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Veterinario eliminado correctamente."
+        );
+
+    } catch (NumberFormatException ex) {
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "El ID del veterinario debe ser numérico."
+        );
+
+    } catch (SQLException ex) {
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Error al eliminar al veterinario: " + ex.getMessage()
+        );
+    }
+    });
+    
+    
+  
 
     // SELECCIONAR UNA FILA DEL JTABLE
     tabla.getSelectionModel().addListSelectionListener(e -> {
@@ -1087,6 +1443,7 @@ private static void configurarProductosServicios(
         Map<String, JTextField> entradas,
         JButton guardar,
         JButton buscar,
+        JButton eliminar,
         JTable tabla,
         DefaultTableModel modelo,
         JLabel aviso) {
@@ -1240,7 +1597,93 @@ private static void configurarProductosServicios(
             JOptionPane.showMessageDialog(tabla,
                     "Error al buscar: " + ex.getMessage());
         }
+    }
+    );
+    
+    
+    //BOTÒN ELIMINAR
+    eliminar.addActionListener(e -> {
+
+    try {
+        // Obtener ID desde el formulario
+        String textoId = entradas.get("ID producto").getText().trim();
+
+        if (textoId.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "Seleccione o busque un producto para eliminar."
+            );
+            return;
+        }
+
+        int idProducto = Integer.parseInt(textoId);
+
+        if (idProducto <= 0) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "El ID del producto no es válido."
+            );
+            return;
+        }
+
+        // Comprobar si existe
+        Producto_Servicio produc = Producto_Servicio.buscarProducto(idProducto);
+
+        if (produc == null) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "El producto no existe."
+            );
+            return;
+        }
+
+        // Solicitar confirmación
+        int respuesta = JOptionPane.showConfirmDialog(
+                tabla,
+                "¿Deseas eliminar el producto con ID " + idProducto + "?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (respuesta != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        // Eliminar utilizando la clase Cita
+        produc.eliminarProducto();
+
+        // Limpiar campos
+        entradas.values().forEach(campo -> campo.setText(""));
+
+        // Actualizar tabla
+        cargarProductosServicios(modelo, aviso);
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Producto eliminado correctamente."
+        );
+
+    } catch (NumberFormatException ex) {
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "El ID del producto debe ser numérico."
+        );
+
+    } catch (SQLException ex) {
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Error al eliminar al producto: " + ex.getMessage()
+        );
+    }
     });
+    
+    
+    
+    
+    
 
     // SELECCIONAR UNA FILA DEL JTABLE
     tabla.getSelectionModel().addListSelectionListener(e -> {
@@ -1359,6 +1802,7 @@ private static void configurarVentas(
         Map<String, JTextField> entradas,
         JButton guardar,
         JButton buscar,
+        JButton eliminar,
         JTable tabla,
         DefaultTableModel modelo,
         JTable tablaDetalle,
@@ -1515,6 +1959,96 @@ private static void configurarVentas(
                     + ex.getMessage());
         }
     });
+    
+    //BOTÒN ELIMINAR
+    eliminar.addActionListener(e -> {
+
+    try {
+        // Obtener el ID de la venta
+        String textoId = entradas.get("ID venta")
+                .getText().trim();
+
+        if (textoId.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "Seleccione o busque una venta para eliminar."
+            );
+            return;
+        }
+
+        int idVenta = Integer.parseInt(textoId);
+
+        if (idVenta <= 0) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "El ID de venta no es válido."
+            );
+            return;
+        }
+
+        // Buscar la venta en MySQL
+        Venta venta = Venta.buscarVenta(idVenta);
+
+        if (venta == null) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "La venta no existe."
+            );
+            return;
+        }
+
+        // Solicitar confirmación
+        int respuesta = JOptionPane.showConfirmDialog(
+                tabla,
+                "¿Está seguro de eliminar la venta con ID "
+                        + idVenta
+                        + " y todos sus detalles?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (respuesta != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        // Eliminar utilizando la clase Venta y su DAO
+        venta.eliminarVenta();
+
+        // Limpiar selección
+        tabla.clearSelection();
+
+        // Limpiar campos
+        entradas.values().forEach(campo -> campo.setText(""));
+
+        // Limpiar detalles de la venta
+        modeloDetalle.setRowCount(0);
+
+        // Actualizar JTable de ventas
+        cargarVentas(modelo, aviso);
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Venta eliminada correctamente."
+        );
+
+    } catch (NumberFormatException ex) {
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Ingrese un ID de venta válido."
+        );
+
+    } catch (SQLException ex) {
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Error al eliminar la venta: "
+                        + ex.getMessage()
+        );
+    }
+});
+    
 
     // SELECCIONAR UNA VENTA DESDE EL JTABLE
     tabla.getSelectionModel().addListSelectionListener(e -> {
@@ -1545,6 +2079,10 @@ private static void configurarVentas(
                     + ex.getMessage());
         }
     });
+    
+    
+    
+    
     }
 
 private static void cargarVentas(
@@ -1776,6 +2314,7 @@ private static void configurarConsultas(
         Map<String, JTextField> entradas,
         JButton guardar,
         JButton buscar,
+        JButton eliminar,
         JTable tabla,
         DefaultTableModel modelo,
         JTable tablaDetalle,
@@ -1921,6 +2460,90 @@ private static void configurarConsultas(
                     + ex.getMessage());
         }
     });
+    
+    //ELIMINAR
+    eliminar.addActionListener(e -> {
+
+    try {
+
+        // Verificar que exista una consulta seleccionada
+        int fila = tabla.getSelectedRow();
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(
+                    tabla,
+                    "Seleccione una consulta para eliminar."
+            );
+            return;
+        }
+
+        // Convertir la fila visual a la fila del modelo
+        int filaModelo = tabla.convertRowIndexToModel(fila);
+
+        // Obtener el ID desde la primera columna
+        int idConsulta = Integer.parseInt(
+                modelo.getValueAt(filaModelo, 0).toString()
+        );
+
+        // Solicitar confirmación
+        int respuesta = JOptionPane.showConfirmDialog(
+                tabla,
+                "¿Está seguro de eliminar la consulta con ID "
+                        + idConsulta
+                        + " y sus detalles asociados?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (respuesta != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        // Eliminar mediante el DAO
+        ConsultaDAO dao = new ConsultaDAO();
+        dao.eliminar(idConsulta);
+
+        // Limpiar los campos
+        entradas.values().forEach(campo -> campo.setText(""));
+
+        // Limpiar los detalles
+        modeloDetalle.setRowCount(0);
+
+        // Limpiar la selección
+        tabla.clearSelection();
+
+        // Actualizar la tabla principal
+        cargarConsultas(modelo, aviso);
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Consulta eliminada correctamente."
+        );
+
+    } catch (NumberFormatException ex) {
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "El ID de la consulta no es válido."
+        );
+
+    } catch (SQLException ex) {
+
+        JOptionPane.showMessageDialog(
+                tabla,
+                "Error al eliminar la consulta: "
+                        + ex.getMessage()
+        );
+
+    }
+});
+    
+    
+    
+    
+    
+    
 
     // SELECCIONAR FILA
     tabla.getSelectionModel().addListSelectionListener(e -> {
@@ -2133,7 +2756,9 @@ private static void mostrarDatosConsulta(
         
         JButton buscar = boton("Buscar",new Color(65,75,113));
         
-        acciones.add(nuevo); acciones.add(guardar); acciones.add(buscar);
+        JButton eliminar = boton("Eliminar",new Color(255,0,0));
+        
+        acciones.add(nuevo); acciones.add(guardar); acciones.add(buscar); acciones.add(eliminar);
         formulario.add(acciones,BorderLayout.SOUTH);
         contenedor.add(formulario,BorderLayout.NORTH);
         
@@ -2170,33 +2795,33 @@ private static void mostrarDatosConsulta(
         if (seccion.equals("Citas")) {
 
         configurarCitas(
-        entradas, guardar, buscar,
+        entradas, guardar, buscar, eliminar,
         tabla, modelo, aviso
         );
 
         } else if (seccion.equals("Mascotas")) {
 
         configurarMascotas(
-            entradas, guardar, buscar,
+            entradas, guardar, buscar, eliminar,
             tabla, modelo, aviso
         );
 
         } else if (seccion.equals("Dueños")) {
 
     configurarDuenos(
-        entradas, guardar, buscar,
+        entradas, guardar, buscar, eliminar,
         tabla, modelo, aviso
     );
     } else if (seccion.equals("Veterinarios")) {
 
     configurarVeterinarios(
-        entradas, guardar, buscar,
+        entradas, guardar, buscar, eliminar,
         tabla, modelo, aviso
     );
     } else if (seccion.equals("Productos / Servicios")) {
 
     configurarProductosServicios(
-        entradas, guardar, buscar,
+        entradas, guardar, buscar, eliminar,
         tabla, modelo, aviso
     );
     } else if (seccion.equals("Ventas")) {
@@ -2253,7 +2878,7 @@ private static void mostrarDatosConsulta(
         BorderLayout.CENTER
     );
     configurarVentas(
-        entradas, guardar, buscar, tabla, modelo, tablaDetalle, modeloDetalle, aviso
+        entradas, guardar, buscar, eliminar, tabla, modelo, tablaDetalle, modeloDetalle, aviso
         );
     } else if (seccion.equals("Consultas")) {
 
@@ -2306,7 +2931,7 @@ private static void mostrarDatosConsulta(
 
     // 5. Conectar con MySQL
     configurarConsultas(
-            entradas, guardar, buscar, tabla, modelo,
+            entradas, guardar, buscar, eliminar, tabla, modelo,
             tablaDetalle, modeloDetalle, aviso
     );
 

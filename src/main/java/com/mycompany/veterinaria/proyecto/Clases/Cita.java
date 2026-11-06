@@ -34,7 +34,8 @@ public class Cita {
     
     
     public void CancelarCita(){
-        
+     
+     
     }
     
     public Boolean ActualizarEstado(){ 
